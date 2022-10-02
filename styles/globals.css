@@ -3,14 +3,73 @@ body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 * {
   box-sizing: border-box;
+  --primary: #76ff03;/*#24ff53;*/
+  --primaryLight: #b0ff50;
+  --primaryDark: #32cb00; /*#04e02a;*/
+}
+a {
+  color: #000 !important;  
+  text-decoration: none !important;  
+}
+a:hover {
+  text-decoration: none !important; 
+}
+.top-space {
+  margin-top: 3rem; 
+}
+.bottom-space {
+  margin-bottom: 4rem; 
+}
+form button {
+  background: var(--primary);
+}
+form button:disabled {
+  /*background: var(--primaryDark); 
+  border: 1px solid var(--primaryDark);*/
+  background: #f4f4f4;  
+}
+button {
+  font-weight: bolder !important;  
+}
+button div  {
+ color: #000 !important; 
+}
+input:focus {
+  border-color: var(--primaryDark) !important;  
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+.text-primary {
+  color: var(--primaryDark); 
+}
+input[type="checkbox"] {
+  height: 1rem;
+  width: 1rem;
+}
+input[type="checkbox"]:checked {
+  background: var(--primary) !important; 
+} 
+.white-text {
+  color : #fff;
+}
+.grey {
+  background: #f6f6f6;  
+}
+.transparent {
+  background: transparent; 
+}
+.full-height {
+  height: 100vh;
+  position: relative;
+}
+.expand-height {
+  height: 100%;
+  overflow: scroll; 
 }
