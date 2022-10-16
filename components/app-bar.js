@@ -23,21 +23,41 @@ export default function AppBar(props) {
       a {
         color: grey !important; 
       }
-      .active {
+      .active div {
+        //color: var(--primaryDark);
+        display: inline-block; 
+        background: #f5f5f5;
+        border-radius: 0.5rem; 
+      }
+      .icon-house {
+       padding: 0.2rem 0.5rem; 
+      }
+      .active div i {
         color: var(--primaryDark); 
+      }
+      span {
+       display: none;
+      }
+      .active span {
+        display: inline; 
       }
     `}</style>
       <div id="bar" className="uk-grid uk-grid-collapse uk-child-width-1-3">  
-        <Link href="../app/"><a><div className="flex-center uk-padding-small">
-         <span id="home" className="bi-house-fill uk-text-large"></span> 
+        <Link href="../app/"><a><div className="flex-center uk-padding-small" id="home">
+         <div className="icon-house">
+         <i  className="bi-house-fill uk-text-large"></i>&nbsp;&nbsp;<span><sup>Home</sup></span> 
+         </div>
         </div></a></Link>    
-        <Link href="../app/savings"><a><div className="flex-center uk-padding-small">
-         <span id="savings" className="bi-box-fill uk-text-large"></span> 
+        <Link href="../app/savings"><a><div className="flex-center uk-padding-small uk-padding-remove-horizontal" id="savings">  <div className="uk-text-center icon-house">  
+         <i className="bi-box-fill uk-text-large"></i>&nbsp;&nbsp;<span><sup>Savings</sup></span>  
+        </div> 
         </div></a></Link>
-        <Link href="../app/me"><a><div className="flex-center uk-padding-small"> 
-         <span id="me" className="bi-person-fill uk-text-large"></span>
-        </div></a></Link>       
+        <Link href="../app/me"><a><div className="flex-center uk-padding-small" id="me">
+        <div className="icon-house">
+         <i  className="bi-person-fill uk-text-large"></i>&nbsp;&nbsp;<span><sup>Me</sup></span>  
+         </div>
+        </div></a></Link>          
       </div>
     </>
-    )
+    ) 
 } 

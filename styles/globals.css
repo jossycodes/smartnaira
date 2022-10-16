@@ -1,4 +1,4 @@
-html,
+html, 
 body {
   padding: 0;
   margin: 0;
@@ -12,7 +12,7 @@ body {
   --primaryDark: #32cb00; /*#04e02a;*/
 }
 a {
-  color: #000 !important;  
+  color: var(--primaryDark);  
   text-decoration: none !important;  
 }
 a:hover {
@@ -22,7 +22,7 @@ a:hover {
   margin-top: 3rem; 
 }
 .bottom-space {
-  margin-bottom: 4rem; 
+ margin-bottom: 3rem;   
 }
 form button {
   background: var(--primary);
@@ -38,7 +38,13 @@ button {
 button div  {
  color: #000 !important; 
 }
-input:focus {
+textarea{
+  height: 6rem !important;
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 1rem; 
+}
+input:focus, textarea:focus {
   border-color: var(--primaryDark) !important;  
 }
 .flex-center {
@@ -48,6 +54,9 @@ input:focus {
 }
 .text-primary {
   color: var(--primaryDark); 
+}
+.bg-primary {
+  background: var(--primary); 
 }
 input[type="checkbox"] {
   height: 1rem;
@@ -66,8 +75,7 @@ input[type="checkbox"]:checked {
   background: transparent; 
 }
 .full-height {
-  height: 100vh;
-  position: relative;
+  height: 100vh; 
 }
 .expand-height {
   height: 100%;

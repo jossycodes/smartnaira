@@ -3,6 +3,7 @@ import Image from 'next/future/image'
 import {useState,useEffect} from 'react'
 import Link from 'next/link'
 import Spinner from '/components/spinner'
+import {useRouter} from 'next/router'
 
 
 export default function Signup() {
@@ -14,7 +15,9 @@ export default function Signup() {
   const [buttonValue,setButtonValue] = useState("signup");
   const [pswType,setPswType] = useState('password');
   const [pswIcon,setPswIcon] = useState('eye');
-  const [checked,setChecked] = useState(false); 
+  const [checked,setChecked] = useState(false);
+  
+  const router = useRouter(); 
   
   const loading = <Spinner />
   
@@ -28,11 +31,50 @@ export default function Signup() {
    }
   }
   
-  const handleSubmit = (e)=> {
+  const handleSubmit = async (e)=> {
     e.preventDefault();
     setButton(true);
-    setButtonValue(loading); 
+    setButtonValue(loading);
+    
+    
+    const form = document.querySelector('form');
+    
+    const formData = new FormData(form);
+    
+    const obj = Object.fromEntries(formData);
+    
+    const response = await fetch(
+		'api/set-cookies',
+		{
+			method: 'POST',
+			headers: {
+                'Content-Type': 'application/json',
+            },
+      body: JSON.stringify(obj),
+		}
+	);
+	const data = await response.json();
+  if(data) {
+    /*const response2 = await fetch(
+		'api/sms',
+		{
+			method: 'POST',
+			headers: {
+                'Content-Type': 'application/json',
+            },
+      //body: JSON.stringify(obj),
+		}
+	);
+	const data2 = await response2.json();
+ if(data2)*/
+ router.push('/confirm-phone-number');
+   //setButtonValue('Signup');
+    //setButton(false);
+  } else {
+    setButtonValue('Signup');
+    setButton(false); 
   }
+}
   return (
     <>
       <Head>
@@ -45,25 +87,25 @@ export default function Signup() {
         <form className="uk-width-1-2@s" onSubmit={handleSubmit}>
         
          <div className="uk-padding-small uk-padding-remove-horizontal">
-            <input onChange={(e)=> setFName(e.target.value)} value={fName} className="uk-input uk-border-rounded" placeholder="First Name"/>   
+            <input onChange={(e)=> setFName(e.target.value)} value={fName} name="fName" className="uk-input uk-border-rounded" placeholder="First Name"/>   
          </div> 
          
          <div className="uk-padding-small uk-padding-remove-horizontal">
-            <input onChange={(e)=> setLName(e.target.value)} value={lName}  className="uk-input uk-border-rounded" placeholder="Last Name"/>   
+            <input onChange={(e)=> setLName(e.target.value)} value={lName} name="lName"  className="uk-input uk-border-rounded" placeholder="Last Name"/>   
          </div>
          
          <div className="uk-padding-small uk-padding-remove-horizontal">
            <div className="uk-inline uk-width-expand">
            <span class="uk-form-icon uk-text-center uk-text-small">+234</span> 
-            <input onChange={(e)=> setPhone(e.target.value)} value={phone}  style={{paddingLeft: "1rem"}} className="uk-input uk-border-rounded" type="number" placeholder="Phone number"/>     
+            <input onChange={(e)=> setPhone(e.target.value)} value={phone}  style={{paddingLeft: "1rem"}} className="uk-input uk-border-rounded" name="phone" type="number" placeholder="Phone number"/>     
            </div>      
          </div>
          
          <div className="uk-padding-small uk-padding-remove-horizontal">
             <div className="uk-inline uk-width-expand">
              <a onClick={changePswType} className={`uk-form-icon uk-form-icon-flip uk-text-muted bi-${pswIcon}`}></a>  
-              <input onChange={(e)=> setPassword(e.target.value)} value={password} type={pswType} className="uk-input uk-border-rounded" placeholder="Password"/>
-            </div> 
+              <input onChange={(e)=> setPassword(e.target.value)} value={password} type={pswType} className="uk-input uk-border-rounded" name="password" placeholder="Password"/>
+            </div>  
          </div> 
          
          <div className="uk-padding-small uk-padding-remove-horizontal uk-grid uk-grid-collapse uk-width-expand uk-child-width-1-2">

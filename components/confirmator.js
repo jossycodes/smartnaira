@@ -28,16 +28,16 @@ export default function Confirmator(props) {
   return (
     <div id={props.id} className="uk-padding uk-padding-remove-horizontal uk-grid uk-grid-collapse uk-child-width-1-4 uk-width-expand">  
           <div className="flex-center">
-           <input id="1" onFocus={handleFocus} onChange={handleChange} className="verify-input" type={type} />  
+           <input id="1" name="one" onFocus={handleFocus} onChange={handleChange} className="verify-input" type={type} />  
           </div> 
           <div className="flex-center">
-           <input id="2" onFocus={handleFocus} onChange={handleChange} className="verify-input" type={type} />
+           <input id="2" name="two" onFocus={handleFocus} onChange={handleChange} className="verify-input" type={type} />
           </div>
           <div className="flex-center">
-           <input id="3" onFocus={handleFocus} onChange={handleChange} type={type} className="verify-input"/> 
+           <input id="3" name="three" onFocus={handleFocus} onChange={handleChange} type={type} className="verify-input"/> 
           </div>
           <div className="flex-center">
-           <input id="4" onFocus={handleFocus} onChange={handleChange} type={type}  className="verify-input"/>
+           <input id="4" name="four" onFocus={handleFocus} onChange={handleChange} type={type}  className="verify-input"/>
           </div>
      </div>  
     )

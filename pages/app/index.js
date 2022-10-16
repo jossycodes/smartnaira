@@ -2,25 +2,37 @@ import Head from 'next/head'
 import Image from 'next/image'
 import {useState,useEffect} from 'react'
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 import Spinner from '/components/spinner'
 import AppBar from '/components/app-bar'
-import numberFormat from '/lib/number-format' 
+import numberFormat from '/lib/number-format'
+import {useSession,getSession} from "next-auth/react" 
+import useSWR from 'swr' 
+ 
 export default function Dash() {
-  const [fName,setFName] = useState('');
-  const balance = 500;   
+  const { data: session, status } = useSession();
+  const router = useRouter(); 
+  const fetcher = async (url) => await fetch(url).then((res) => res.json());  
+ const { data, error } = useSWR(`../api/actions/balance?user=${(session)? session.user._id : ''}`,fetcher);  
+ 
   const Top = ()=> {
     return (<div className="uk-padding-small uk-padding-remove-bottom">
     
-    </div>)    
-  } 
+    </div>)
+   
+  }
+  
+  if(status === 'loading') return <div className="flex-center full-height"><Spinner /></div>;
+  
+  if(status === 'unauthenticated') return router.replace('/login');  
+  
+  
   return (
     <div>
     <style jsx>{`
       #dash {
         background: #f5f5f5;   
         position: relative;
-       /* border-bottom-left-radius: 5rem;
-        border-bottom-right-radius: 5rem;*/ 
         min-height: 13rem;
         padding-bottom: 2rem; 
       }
@@ -34,49 +46,66 @@ export default function Dash() {
        color: #000 !important; 
      }
      .x-big {
-       font-size: 2.2rem;    
+       font-size: 2rem;     
      }
      #dash2 {
       /* border: 1px solid var(--primaryDark);*/      
      }
      .save div {
-       color: #005cff;
+       //color: #005cff;
      }
      .save div span {
        color: #063abe; 
      }
      .topup div {
-       color: #f300ff;
+       //color: #f300ff;
      }
      .topup div span {
        color: #bc04ab; 
      }
      .withdraw div {
-       color: #ff7c00;
+       //color: #ff7c00;
      }
      .withdraw div span {
        color: #cb7912; 
      }
-     
+     .extra {
+       min-height: 5rem !important;
+       border: 1px solid #f5f5f5;
+       position: relative;
+     }
+     .tag {
+       display: inline-block;
+       position: absolute;
+       top: 0;
+       right: 0; 
+       color: white;
+       font-weight: bold;
+       padding: 0.1rem 0.25rem; 
+       background: red;
+       font-size: 0.7rem; 
+       border-bottom-left-radius: 0.3rem;
+     }
     `}</style>
       <div id="dash">
         <Top />
         <div className="uk-padding-small uk-padding-remove-vertical uk-grid uk-grid-collapse uk-child-width-1-2">
         <div>
+          
         <div className="uk-padding-small uk-padding-remove-horizontal">
          <div className="">Balance <span ></span></div>  
-         <div className="uk-text-lead">&#8358;0.00</div>
-         </div>
+         <div className="uk-text-lead">&#8358;{(data)? numberFormat(data.balance) : '0.00'}</div>  
+         </div>         
          
-         <div className="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top"> 
-         <div className="">Current Rates <span ></span></div>  
-         <div className="uk-text-lead">+255.5% p.a</div> 
-         </div>
+         
         </div> 
          
          <div className="uk-text-right uk-padding-small uk-padding-remove-horizontal flex-center">  
-          <span>Auto invest is off</span> 
-         </div>
+            <div className="uk-padding-small uk-padding-remove-horizontal uk-padding-remove-top"> 
+         <div className="">Current Rates <span ></span></div>  
+         <div className="uk-text-lead">+255.5% p.a</div> 
+         </div> 
+         </div> 
          
          {/*<div className="uk-padding-small uk-padding-remove-horizontal">
         <div className="">Interest Rate (#)</div> 
@@ -99,18 +128,18 @@ export default function Dash() {
       <div className="uk-padding-small uk-padding-remove-vertical">  
       <div className="top-space"></div>
        <div id="dash2" className="uk-grid uk-grid-collapse uk-child-width-1-3">
-        <div className="uk-text-center save"> 
-         <Link href="app/save"><a><div><span className="bi-piggy-bank-fill x-big"></span></div>  
-         <div>save</div></a></Link>  
-        </div>
         <div className="uk-text-center topup">
          <Link href="app/topup"><a><div><span className="bi-credit-card-2-back-fill x-big"></span></div>
-         <div>topup</div></a></Link>      
+         <div className="uk-text-muted uk-text-small">Topup</div></a></Link>       
         </div>
+        <div className="uk-text-center save"> 
+         <Link href="app/save"><a><div><span className="bi-box-fill x-big"></span></div>   
+         <div className="uk-text-muted uk-text-small">Save</div></a></Link>   
+        </div> 
         <div className="uk-text-center withdraw">
-         <div><span className="bi-wallet-fill x-big"></span></div>
-         <div>withdraw</div>        
-        </div>
+         <Link href="app/withdrawal"><a><div><span className="bi-bag-fill x-big"></span></div>  
+         <div className="uk-text-muted uk-text-small">Withdraw</div></a></Link>        
+        </div>   
        </div> 
         {/*<div className="uk-padding-small">
         <div>
@@ -129,7 +158,23 @@ export default function Dash() {
            
           </div>
         </div>}*/}
-       </div>  
+       </div>
+       
+      <div className="bottom-space"> 
+       <div className="uk-grid uk-grid-collapse uk-child-width-1-2 uk-padding uk-padding-remove-horizontal">  
+        <div className="flex-center extra">
+        <span className="tag">+10%</span> 
+          <span className="bi-people-fill uk-text-lead"></span>&nbsp;&nbsp;<span>Refer friends</span>  
+        </div>    
+        <div className="flex-center extra">
+          <span></span>&nbsp;&nbsp;<span>smart saving</span> 
+        </div> 
+        <div className="flex-center extra">
+          <span></span>&nbsp;&nbsp;<span>smart saving</span>
+        </div> 
+       </div>
+       </div>
+       
       <AppBar />  
      </div> 
     )

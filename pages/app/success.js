@@ -1,10 +1,13 @@
 import Lottie from 'lottie-react'
 import {useState,useEffect,useRef} from 'react'
-import * as animationData from '../animations/success-check.json'
+import * as animationData from '../../animations/success-check.json'
 import Link from 'next/link'
+import {useRouter} from 'next/router' 
 
 export default function Success(props) {
  const lottieRef = useRef();
+ const { query } = useRouter();
+ const router = useRouter();
  //lottieRef.current.setSpeed(2);    
  const defaultOptions = {
     loop: true,
@@ -14,17 +17,18 @@ export default function Success(props) {
         preserveAspectRatio: "xMidYMid slice"
     }, 
   };
+  
+  useEffect(() => {
+  if(!query.ref || !query.to) router.back(); 
+  },[]); 
  
  
  return (
     <div id="box">
     <style jsx>{`
       #box {
-        position: fixed; 
-        height: 100%; 
+        height: 100vh; 
         width: 100vw;
-        top: 0;
-        left: 0;
         background: white;
       }
       #container {
@@ -42,10 +46,10 @@ export default function Success(props) {
         lottieRef={lottieRef}
         />
        </div>
-        <p className="uk-text-lead uk-text-center">success</p>
-        <p className="uk-text-center"><Link href=""><a>view details <span className="bi-chevron-rigt"></span></a></Link></p>
-    </div>   
+        <h2 className="uk-text-center">success</h2> 
+        <p className="uk-text-center"><Link href={'/app/me/'+query.to+'/'+query.ref}><a className="text-primary">view details <span className="bi-chevron-right"></span></a></Link></p>   
+    </div>     
    )
   
 
-}   
+}  
